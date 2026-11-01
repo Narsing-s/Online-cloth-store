@@ -2,7 +2,7 @@
 create extension if not exists pgcrypto;
 create table if not exists public.profiles(id uuid primary key references auth.users(id) on delete cascade,full_name text,phone text,created_at timestamptz default now());
 create table if not exists public.user_roles(user_id uuid references auth.users(id) on delete cascade,role text not null check(role in('admin','customer')),primary key(user_id,role));
-create table if not exists public.products(id uuid primary key default gen_random_uuid(),name text not null,category text not null check(category in('Men','Women','Kids','Footwear','Essentials')),type text not null,description text default '',price numeric(10,2) not null check(price>=0),compare_at_price numeric(10,2) default 0,image_url text not null,sizes text[] not null default '{}',stock integer not null default 0 check(stock>=0),active boolean not null default true,created_at timestamptz default now());
+create table if not exists public.products(id uuid primary key default gen_random_uuid(),name text not null,category text not null check(category in('Men','Women','Kids','Footwear','Accessories','Essentials')),type text not null,description text default '',price numeric(10,2) not null check(price>=0),compare_at_price numeric(10,2) default 0,image_url text not null,sizes text[] not null default '{}',stock integer not null default 0 check(stock>=0),active boolean not null default true,created_at timestamptz default now());
 create table if not exists public.orders(id uuid primary key default gen_random_uuid(),user_id uuid not null references auth.users(id),status text not null default 'placed' check(status in('placed','confirmed','packed','shipped','delivered','cancelled')),total numeric(10,2) not null,payment_method text not null default 'COD',payment_status text not null default 'pending',shipping_address jsonb not null,created_at timestamptz default now());
 create table if not exists public.order_items(id uuid primary key default gen_random_uuid(),order_id uuid not null references public.orders(id) on delete cascade,product_id uuid references public.products(id),product_name text not null,unit_price numeric(10,2) not null,quantity integer not null check(quantity>0),selected_size text);
 create or replace function public.is_store_admin() returns boolean language sql stable security definer set search_path=public as $$ select exists(select 1 from public.user_roles where user_id=auth.uid() and role='admin'); $$;
@@ -46,3 +46,10 @@ end;$$;
 revoke all on function public.place_store_order(jsonb,jsonb,text) from public;grant execute on function public.place_store_order(jsonb,jsonb,text) to authenticated;
 -- After registering your own account, copy its UUID from Authentication > Users and run:
 -- insert into public.user_roles(user_id,role) values('YOUR_AUTH_USER_UUID','admin');
+
+-- Safe category expansion for projects that already ran an earlier schema version.
+alter table public.products drop constraint if exists products_category_check;
+alter table public.products add constraint products_category_check check(category in('Men','Women','Kids','Footwear','Accessories','Essentials'));
+create index if not exists products_active_category_idx on public.products(category,active,created_at desc);
+create index if not exists orders_user_created_idx on public.orders(user_id,created_at desc);
+create index if not exists order_items_order_idx on public.order_items(order_id);
