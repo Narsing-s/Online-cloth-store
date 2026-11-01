@@ -34,6 +34,7 @@ begin
   if not(v_size=any(v_product.sizes)) then raise exception 'Selected size is unavailable for %',v_product.name;end if;
   v_total:=v_total+v_product.price*v_qty;
  end loop;
+ if v_total<1499 then v_total:=v_total+79; end if;
  insert into public.orders(user_id,total,payment_method,payment_status,shipping_address) values(auth.uid(),v_total,'COD','pending',p_address) returning id into v_order;
  for v_item in select * from jsonb_array_elements(p_items) loop
   v_qty:=(v_item->>'quantity')::integer;v_size:=v_item->>'size';select * into v_product from public.products where id=(v_item->>'product_id')::uuid for update;
