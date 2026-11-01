@@ -1,6 +1,6 @@
 # THREAD & CO. — Online Cloth Store
 
-Responsive multi-category shopping storefront for men's fashion, women's fashion, kids' wear, slippers/footwear, women's innerwear and boys' innerwear.
+Responsive multi-category shopping storefront for men's fashion, women's fashion, kids' wear, slippers/footwear, accessories, women's innerwear and boys' innerwear.
 
 ## Run locally
 1. Install Node.js 20+.
@@ -20,10 +20,11 @@ Responsive multi-category shopping storefront for men's fashion, women's fashion
 ## Included
 - Responsive premium storefront for five departments.
 - Search, category filtering, price sorting and quick-view product details.
-- Size selection, persistent bag, quantity controls and wishlist interactions.
+- Size selection, persistent bag, quantity controls and a persistent, browsable wishlist.
 - Free-shipping threshold display and order total.
 - Supabase email/password authentication.
-- Admin-only product publishing and order overview.
+- Admin-only product publishing, inventory visibility controls and order-status management.
+- Customer account order history, wishlist management and Indian mobile/PIN validation at checkout.
 - Row-level security and transactional COD order creation with stock validation.
 
 ## Production notes
