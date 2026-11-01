@@ -10,3 +10,5 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 .wishlist-line{display:grid;grid-template-columns:58px 1fr auto auto;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #eee8df}.wishlist-line img{width:58px;height:68px;object-fit:cover}.wishlist-line>div{display:flex;flex-direction:column;gap:6px;font-size:11px}.wishlist-line small{font-size:10px;color:#8b8176}.wishlist-line .textbtn{font-size:9px;padding:5px}.adminform{width:min(520px,100%)}.adminform h3{margin:18px 0 4px;padding-top:10px;border-top:1px solid #e9e1d7}
 @media(max-width:480px){.wishlist-line{grid-template-columns:48px 1fr auto;gap:7px}.wishlist-line img{width:48px;height:58px}.wishlist-line button:last-child{grid-column:3}.wishlist-line .textbtn{font-size:8px}}
+
+.stock-note{font-size:10px;color:#7d796f;letter-spacing:.3px}.dark:disabled{opacity:.45;cursor:not-allowed}
